@@ -10,21 +10,15 @@
 #include "driver/gpio.h"
 #include "esp_attr.h"
 
-
-#define ENCODER_PHASE_A_0     16
-#define ENCODER_PHASE_B_0     5
-// #define MOTOR_DIRECTION_A_0   25
-// #define MOTOR_DIRECTION_B_0   26
-// #define MOTOR_PWM_0           27
+//pindefs shifted to ./pin_defs_for_single_motor.h
 
 #define ESP_INTR_FLAG_DEFAULT 0
 
 // #define PWM_DUTY_0 20
-
 // float pwm_0 = PWM_DUTY_0;
 
 // static volatile bool dir_0 = 0;
-static volatile int16_t count_0 = 0;
+static volatile int16_t ticks_count_0 = 0;
 
 // static const char *TAG = "Rhino Robot";
 
@@ -54,48 +48,40 @@ static void config_input(int arg)
 
 static void IRAM_ATTR gpio_isr_handler_0(void* arg)
 {
-    // count_0++;
     if(gpio_get_level(ENCODER_PHASE_B_0) == 0)
     {
-        count_0++;
+        ticks_count_0++;
     }
     else 
     {
-        count_0--;
+        ticks_count_0--;
     }
 
-    // if(abs(count_0) == 100)
+    // if(abs(ticks_count_0) == 100)
     // {
     //     pwm_0 = 0;
     // }
 }
 
-static void run_rhino(void* arg)
+static void print_ticks(void* arg)
 {
-    for(;;) 
+    while(true)
     {
-
-        printf("The Encoder ticks for motor 0: %d\n", count_0);
-
+        printf("The Encoder ticks for motor 0: %d\n", ticks_count_0);
     }
 }
 
 void app_main()
 {
-    
-    config_isr(ENCODER_PHASE_A_0);
-    
     config_input(ENCODER_PHASE_B_0);
-    
-    xTaskCreate(run_rhino, "rhino robot", 2048, NULL, 10, NULL);
-    
+    config_isr(ENCODER_PHASE_A_0);
     gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
-
     gpio_isr_handler_add(ENCODER_PHASE_A_0, gpio_isr_handler_0, (void*) ENCODER_PHASE_B_0);
+    
+    xTaskCreate(print_ticks, "print_ticks", 2048, NULL, 10, NULL);
         
     while(1) 
     {
-        // printf("while");
         // printf("gpio = %d\t%d\n", gpio_get_level(ENCODER_PHASE_A_0), gpio_get_level(ENCODER_PHASE_B_0));
         vTaskDelay(100 / portTICK_RATE_MS);
     }
