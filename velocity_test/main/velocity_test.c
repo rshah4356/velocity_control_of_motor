@@ -11,15 +11,14 @@
 #include "driver/mcpwm.h"
 #include "soc/mcpwm_reg.h"
 #include "soc/mcpwm_struct.h"
+#include "esp_timer.h"
 #include "../../common_files/pin_defs_for_single_motor.h"
 
 #define ESP_INTR_FLAG_DEFAULT 0
 
-// #define PWM_DUTY_0 20
-int pwm_0 = 20;
 int pwm = 20;
+int motor_velocity;
 
-// static volatile bool dir_0 = 0;
 static volatile int16_t ticks_count_0 = 0;
 
 static gpio_config_t io_conf;
@@ -55,10 +54,6 @@ static void IRAM_ATTR gpio_isr_handler_0(void* arg)
     }
 }
 
-// static void mcpwm_gpio_initialize()
-// {
-// }
-
 static void motor_init()
 {
     gpio_pad_select_gpio(MOTOR_DIRECTION_A_0);
@@ -85,9 +80,26 @@ static void print_ticks(void* arg)
     }
 }
 
+static void calculate_velocity(void* arg){
+    int64_t motor_velocity_local = (int64_t) arg;
+    motor_velocity_local = ticks_count_0 * ;
+}
+
+static void setup_velocity_calculator(void* arg){
+    const esp_timer_create_args_t periodic_timer_args = {
+            .callback = calculate_velocity,
+            // .arg = (void*) &motor_velocity,
+            .name = "periodic"
+    };
+
+    esp_timer_handle_t periodic_timer;
+    esp_timer_create(&periodic_timer_args, &periodic_timer);
+    esp_timer_start_periodic(periodic_timer, 44);
+}
+
 // static void drive_motor(void* pwm)
 static void drive_motor()
-{
+{motor_velocity_local
     int del = 1;
     motor_init();
     while(1)
@@ -124,7 +136,6 @@ static void drive_motor()
     }
 }
 
-
 void app_main()
 {
     config_input(ENCODER_PHASE_B_0);
@@ -133,8 +144,8 @@ void app_main()
     gpio_isr_handler_add(ENCODER_PHASE_A_0, gpio_isr_handler_0, (void*) ENCODER_PHASE_B_0);
     
     xTaskCreate(print_ticks, "print_ticks", 2048, NULL, 10, NULL);
-    // xTaskCreate(drive_motor, "drive_motor", 2048, (void*)&pwm_0, 11, NULL);    
-    xTaskCreate(drive_motor, "drive_motor", 4096, NULL, 11, NULL);    
+    xTaskCreate(drive_motor, "drive_motor", 4096, NULL, 11, NULL);
+    xTaskCreatePinnedToCore(setup_velocity_calculator, "setup_velocity_calculator", 4096, NULL, 11, NULL, 1); 
     while(1) 
     {
         // printf("gpio = %d\t%d\n", gpio_get_level(ENCODER_PHASE_A_0), gpio_get_level(ENCODER_PHASE_B_0));
