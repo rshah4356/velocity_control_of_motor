@@ -32,7 +32,7 @@ static void config_isr(int arg)
     gpio_config(&io_conf);
 }
 
-static void config_input(int arg)
+static void config_gpio(int arg)
 {
     io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
     io_conf.pin_bit_mask = ((uint64_t)1 << arg);
@@ -82,26 +82,24 @@ static void print_ticks(void* arg)
 
 static void calculate_velocity(void* arg){
     int64_t motor_velocity_local = (int64_t) arg;
-    motor_velocity_local = ticks_count_0 * 12000;//(1000000*60)/(135*37) = 12012.012
-    ticks_count_0 = 0;
+    motor_velocity_local = ticks_count_0 * ;
 }
 
 static void setup_velocity_calculator(void* arg){
     const esp_timer_create_args_t periodic_timer_args = {
             .callback = calculate_velocity,
-            .arg = (void*) &motor_velocity,
+            // .arg = (void*) &motor_velocity,
             .name = "periodic"
     };
 
     esp_timer_handle_t periodic_timer;
     esp_timer_create(&periodic_timer_args, &periodic_timer);
     esp_timer_start_periodic(periodic_timer, 44);
-    vTaskDelete(NULL);
 }
 
 // static void drive_motor(void* pwm)
 static void drive_motor()
-{
+{motor_velocity_local
     int del = 1;
     motor_init();
     while(1)
@@ -145,9 +143,8 @@ void app_main()
     gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
     gpio_isr_handler_add(ENCODER_PHASE_A_0, gpio_isr_handler_0, (void*) ENCODER_PHASE_B_0);
     
-    xTaskCreatePinnedToCore(print_ticks, "print_ticks", 2048, NULL, 9, NULL, tskNO_AFFINITY);
-    // xTaskCreate(setup_velocity_calculator, "setup_velocity_calculator", 4096, NULL, 11, NULL); 
-    xTaskCreatePinnedToCore(drive_motor, "drive_motor", 4096, NULL, 11, NULL, tskNO_AFFINITY);
+    xTaskCreate(print_ticks, "print_ticks", 2048, NULL, 10, NULL);
+    xTaskCreate(drive_motor, "drive_motor", 4096, NULL, 11, NULL);
     xTaskCreatePinnedToCore(setup_velocity_calculator, "setup_velocity_calculator", 4096, NULL, 11, NULL, 1); 
     while(1) 
     {
