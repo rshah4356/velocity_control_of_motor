@@ -10,16 +10,15 @@
 #include "esp_attr.h"
 
 #include "pin_defs_for_single_motor.h"
-//pindefs shifted to ./pin_defs_for_single_motor.h
 
 #define ESP_INTR_FLAG_DEFAULT 0
 
+#define GPIO_PWM0A_OUT 15   //Set GPIO 15 as PWM0A
 // #define PWM_DUTY_0 20
 // float pwm_0 = PWM_DUTY_0;
 
 // static volatile bool dir_0 = 0;
 static volatile int16_t ticks_count_0 = 0;
-static volatile int16_t temp = 0;
 
 // static const char *TAG = "Rhino Robot";
 
@@ -46,11 +45,8 @@ static void config_input(int arg)
     gpio_config(&io_conf);
 }
 
-
 static void IRAM_ATTR gpio_isr_handler_0(void* arg)
 {
-    temp = gpio_get_level((gpio_num_t) &arg);
-    // if(gpio_get_level((gpio_num_t) &arg) == 0)
     if(gpio_get_level(ENCODER_PHASE_B_0) == 0)
     {
         ticks_count_0++;
@@ -66,13 +62,32 @@ static void IRAM_ATTR gpio_isr_handler_0(void* arg)
     // }
 }
 
+static void mcpwm_gpio_initialize()
+{
+    printf("initializing mcpwm gpio...\n");
+    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, GPIO_PWM0A_OUT);
+}
+
+static void motor_init()
+{
+    gpio_pad_select_gpio();
+    gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT);
+}
 static void print_ticks(void* arg)
 {
     while(true)
     {
-        // printf("The Encoder ticks for motor 0: %d\n", ticks_count_0);
-        printf("The Encoder ticks for motor 0: %d\n", temp);
+        printf("The Encoder ticks for motor 0: %d\n", ticks_count_0);
     }
+}
+
+static void drvie_motor(int pwm)
+{
+    if(pwm < 0){
+
+    }
+    mcpwm_set_duty(mcpwm_num, timer_num, MCPWM_OPR_A, abs(pwm));
+    mcpwm_set_duty_type(mcpwm_num, timer_num, MCPWM_OPR_A, MCPWM_DUTY_MODE_0);
 }
 
 void app_main()

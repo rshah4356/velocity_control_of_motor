@@ -3,8 +3,8 @@
 
     #define ENCODER_PHASE_A_0     5
     #define ENCODER_PHASE_B_0     16
-    #define MOTOR_DIRECTION_A_0   34
-    #define MOTOR_DIRECTION_B_0   35
-    #define MOTOR_PWM_0           15
+    // #define MOTOR_DIRECTION_A_0   25
+    // #define MOTOR_DIRECTION_B_0   26
+    // #define MOTOR_PWM_0           27
 
 #endif
