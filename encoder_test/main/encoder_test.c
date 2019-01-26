@@ -9,7 +9,7 @@
 #include "driver/gpio.h"
 #include "esp_attr.h"
 
-#include "pin_defs_for_single_motor.h"
+#include "../../common_files/pin_defs_for_single_motor.h"
 //pindefs shifted to ./pin_defs_for_single_motor.h
 
 #define ESP_INTR_FLAG_DEFAULT 0
