@@ -6,10 +6,10 @@
 #include "freertos/task.h"
 // #include "freertos/queue.h"
 // #include "freertos/event_groups.h"
-
 #include "driver/gpio.h"
 #include "esp_attr.h"
 
+#include "pin_defs_for_single_motor.h"
 //pindefs shifted to ./pin_defs_for_single_motor.h
 
 #define ESP_INTR_FLAG_DEFAULT 0
@@ -83,6 +83,6 @@ void app_main()
     while(1) 
     {
         // printf("gpio = %d\t%d\n", gpio_get_level(ENCODER_PHASE_A_0), gpio_get_level(ENCODER_PHASE_B_0));
-        vTaskDelay(100 / portTICK_RATE_MS);
+        vTaskDelay(1000 / portTICK_RATE_MS);
     }
 }
