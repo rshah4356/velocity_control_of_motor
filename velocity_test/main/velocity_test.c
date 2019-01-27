@@ -16,7 +16,7 @@
 
 #define ESP_INTR_FLAG_DEFAULT 0
 
-int pwm = 20;
+int pwm = 0;
 int motor_velocity;
 
 static volatile int16_t ticks_count_0 = 0;
@@ -32,11 +32,11 @@ static void config_isr(int arg)
     gpio_config(&io_conf);
 }
 
-static void config_input(int arg)
+static void config_gpio(int arg, gpio_mode_t GPIO_MODE)
 {
     io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
     io_conf.pin_bit_mask = ((uint64_t)1 << arg);
-    io_conf.mode = GPIO_MODE_INPUT;
+    io_conf.mode = GPIO_MODE;
     io_conf.pull_up_en = 0;
     io_conf.pull_down_en = 0;
     gpio_config(&io_conf);
@@ -76,26 +76,26 @@ static void print_ticks(void* arg)
 {
     while(true)
     {
-        printf("The Encoder ticks for motor 0: %d\t pwm: %d\n", ticks_count_0, pwm);
+        printf("The Encoder ticks for motor 0: %d, \tvel: %d,\tpwm: %d\n", ticks_count_0, motor_velocity, pwm);
     }
 }
 
 static void calculate_velocity(void* arg){
-    int64_t motor_velocity_local = (int64_t) arg;
-    motor_velocity_local = ticks_count_0 * 12000;//(1000000*60)/(135*37) = 12012.012
+    // int64_t motor_velocity_local = (int64_t) arg;
+    motor_velocity = ticks_count_0 * 4;    //(1000000*60)/(135*111111) = 4.0000400004
     ticks_count_0 = 0;
 }
 
 static void setup_velocity_calculator(void* arg){
     const esp_timer_create_args_t periodic_timer_args = {
             .callback = calculate_velocity,
-            .arg = (void*) &motor_velocity,
+            // .arg = (void*) &motor_velocity,
             .name = "periodic"
     };
 
     esp_timer_handle_t periodic_timer;
     esp_timer_create(&periodic_timer_args, &periodic_timer);
-    esp_timer_start_periodic(periodic_timer, 44);
+    esp_timer_start_periodic(periodic_timer, 111111);
     vTaskDelete(NULL);
 }
 
@@ -110,14 +110,13 @@ static void drive_motor()
         pwm += del;
         switch (pwm)
         {
-            case -99:
+            case -100:
                 del = 1;
                 break;
-            case 99:
+            case 100:
                 del = -1;
                 break;
-            default:
-                break;
+            default:;
         }
 
         if(pwm < 0){
@@ -140,15 +139,15 @@ static void drive_motor()
 
 void app_main()
 {
-    config_input(ENCODER_PHASE_B_0);
+    config_gpio(ENCODER_PHASE_B_0, GPIO_MODE_INPUT);
     config_isr(ENCODER_PHASE_A_0);
     gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
     gpio_isr_handler_add(ENCODER_PHASE_A_0, gpio_isr_handler_0, (void*) ENCODER_PHASE_B_0);
     
-    xTaskCreatePinnedToCore(print_ticks, "print_ticks", 2048, NULL, 9, NULL, tskNO_AFFINITY);
+    xTaskCreate(print_ticks, "print_ticks", 2048, NULL, 9, NULL);
     // xTaskCreate(setup_velocity_calculator, "setup_velocity_calculator", 4096, NULL, 11, NULL); 
-    xTaskCreatePinnedToCore(drive_motor, "drive_motor", 4096, NULL, 11, NULL, tskNO_AFFINITY);
-    xTaskCreatePinnedToCore(setup_velocity_calculator, "setup_velocity_calculator", 4096, NULL, 11, NULL, 1); 
+    xTaskCreate(drive_motor, "drive_motor", 4096, NULL, 11, NULL);
+    xTaskCreate(setup_velocity_calculator, "setup_velocity_calculator", 4096, NULL, 11, NULL); 
     while(1) 
     {
         // printf("gpio = %d\t%d\n", gpio_get_level(ENCODER_PHASE_A_0), gpio_get_level(ENCODER_PHASE_B_0));
