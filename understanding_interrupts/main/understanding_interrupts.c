@@ -82,7 +82,7 @@ static void print_ticks(void* arg)
 
 static void calculate_velocity(void* arg){
     int64_t motor_velocity_local = (int64_t) arg;
-    motor_velocity_local = ticks_count_0 * ;
+    motor_velocity_local = ticks_count_0 * 12000;//(1000000*60)/(135*37) = 12012.012
 }
 
 static void setup_velocity_calculator(void* arg){
@@ -99,7 +99,7 @@ static void setup_velocity_calculator(void* arg){
 
 // static void drive_motor(void* pwm)
 static void drive_motor()
-{motor_velocity_local
+{
     int del = 1;
     motor_init();
     while(1)
