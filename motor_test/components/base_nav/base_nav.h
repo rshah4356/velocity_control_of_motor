@@ -7,7 +7,6 @@
 #include "soc/mcpwm_reg.h"
 #include "soc/mcpwm_struct.h"
 #include "esp_timer.h"
-#include "../pin_defs_for_single_motor/pin_defs_for_single_motor.h"
 
 #define ESP_INTR_FLAG_DEFAULT 0
 
@@ -29,10 +28,8 @@ typedef struct{
     int desr_velocity;
     gpio_num_t dir_0_pin;
     gpio_num_t dir_1_pin;
-    motor_pwm_t pwm;
+    motor_pwm_t pwm_pin;
 }motor_commander_t;
-
-
 
 void init_interrupt(gpio_num_t NUM_GPIO);
 

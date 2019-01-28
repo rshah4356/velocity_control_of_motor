@@ -4,44 +4,14 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-// #include "freertos/queue.h"
-// #include "freertos/event_groups.h"
-#include "driver/gpio.h"
-#include "esp_attr.h"
-#include "driver/mcpwm.h"
-#include "soc/mcpwm_reg.h"
-#include "soc/mcpwm_struct.h"
-#include "../../common_files/pin_defs_for_single_motor.h"
+#include "../components/base_nav/base_nav.h"
+#include "../components/pin_defs_for_single_motor/pin_defs_for_single_motor.h"
 
-#define ESP_INTR_FLAG_DEFAULT 0
 
-// #define PWM_DUTY_0 20
-int pwm_0 = 20;
 int pwm = 20;
 
 // static volatile bool dir_0 = 0;
 static volatile int16_t ticks_count_0 = 0;
-
-static gpio_config_t io_conf;
-
-static void config_isr(int arg)
-{
-    io_conf.intr_type = GPIO_PIN_INTR_NEGEDGE;
-    io_conf.mode = GPIO_MODE_INPUT;
-    io_conf.pin_bit_mask = ((uint64_t)1 << arg);
-    io_conf.pull_up_en = 1;
-    gpio_config(&io_conf);
-}
-
-static void config_input(int arg)
-{
-    io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
-    io_conf.pin_bit_mask = ((uint64_t)1 << arg);
-    io_conf.mode = GPIO_MODE_INPUT;
-    io_conf.pull_up_en = 0;
-    io_conf.pull_down_en = 0;
-    gpio_config(&io_conf);
-}
 
 static void IRAM_ATTR gpio_isr_handler_0(void* arg)
 {
@@ -55,27 +25,7 @@ static void IRAM_ATTR gpio_isr_handler_0(void* arg)
     }
 }
 
-// static void mcpwm_gpio_initialize()
-// {
-// }
 
-static void motor_init()
-{
-    gpio_pad_select_gpio(MOTOR_DIRECTION_A_0);
-    gpio_pad_select_gpio(MOTOR_DIRECTION_B_0);
-    gpio_set_direction(MOTOR_DIRECTION_A_0, GPIO_MODE_OUTPUT);
-    gpio_set_direction(MOTOR_DIRECTION_B_0, GPIO_MODE_OUTPUT);
-
-    printf("initializing mcpwm\n");
-    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, MOTOR_PWM_0);
-    mcpwm_config_t pwm_config;
-    pwm_config.frequency = 1000;    //frequency = 500Hz,
-    pwm_config.cmpr_a = 0;    //duty cycle of PWMxA = 0
-    pwm_config.cmpr_b = 0;    //duty cycle of PWMxB = 0
-    pwm_config.counter_mode = MCPWM_UP_COUNTER;
-    pwm_config.duty_mode = MCPWM_DUTY_MODE_0;
-    mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_config);
-}
 
 static void print_ticks(void* arg)
 {

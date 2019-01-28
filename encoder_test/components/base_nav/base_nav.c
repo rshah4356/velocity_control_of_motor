@@ -34,34 +34,33 @@ void init_pwm(motor_pwm_t *motor){
 void init_motor(motor_commander_t *motor){
     init_gpio(motor->dir_0_pin, GPIO_MODE_OUTPUT);
     init_gpio(motor->dir_1_pin, GPIO_MODE_OUTPUT);
-    init_pwm(&(motor->pwm));
+    init_pwm(&(motor->pwm_pin));
 }
 
 void drive_motor(motor_commander_t *motor){
     init_motor(motor);
-    static int err;
-    static int prev_err;
+    static int err ;
+    static int prev_err ;
     static int cum_err;
     int pwm = 0;
     
-    while(1){
-        err = motor->desr_velocity - motor->curr_velocity;
-        prev_err = motor->curr_velocity - motor->prev_velocity;
-        cum_err += err;
-        pwm = KP*err - KD*(err-prev_err) + KI*(cum_err);
-        motor->prev_velocity = motor->curr_velocity;
-        
-        if(pwm > 0)
-        {
-            gpio_set_level(motor->dir_0_pin,0);
-            gpio_set_level(motor->dir_1_pin,1);
-        }
-        if(pwm < 0)
-        {
-            gpio_set_level(motor->dir_0_pin,1);
-            gpio_set_level(motor->dir_1_pin,0);
-        }
-        mcpwm_set_duty(motor->pwm.pwm_unit, motor->pwm.pwm_timer, motor->pwm.pwm_operator, abs(pwm));
-        mcpwm_set_duty_type(motor->pwm.pwm_unit, motor->pwm.pwm_timer, motor->pwm.pwm_operator, MCPWM_DUTY_MODE_0);
+    err = motor->desr_velocity - motor->curr_velocity;
+    prev_err = motor->curr_velocity - motor->prev_velocity;
+    cum_err += err;
+    pwm = KP*err - KD*(err-prev_err) + KI*(cum_err);
+    motor->prev_velocity = motor->curr_velocity;
+    
+    if(pwm > 0)
+    {
+        gpio_set_level(motor->dir_0_pin,0);
+        gpio_set_level(motor->dir_1_pin,1);
     }
+    if(pwm < 0)
+    {
+        gpio_set_level(motor->dir_0_pin,1);
+        gpio_set_level(motor->dir_1_pin,0);
+    }
+    mcpwm_set_duty(motor->pwm_pin.pwm_unit, motor->pwm_pin.pwm_timer, motor->pwm_pin.pwm_operator, abs(pwm));
+    mcpwm_set_duty_type(motor->pwm_pin.pwm_unit, motor->pwm_pin.pwm_timer, motor->pwm_pin.pwm_operator, MCPWM_DUTY_MODE_0);
+
 }
