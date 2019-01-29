@@ -37,31 +37,56 @@ void init_motor(motor_commander_t *motor){
     init_pwm(&(motor->pwm));
 }
 
+void print_motor_status(motor_commander_t *motor){
+    while(1){
+        printf("\nMOTOR: %s,\tDES: %d,\tCURR: %d,\tDCYC:%d", motor->name, motor->desr_velocity, motor->curr_velocity, motor->duty_cycle);
+    }
+}
+
 void drive_motor(motor_commander_t *motor){
     init_motor(motor);
     static int err;
     static int prev_err;
     static int cum_err;
-    int pwm = 0;
+    motor->duty_cycle = 0;
     
     while(1){
+        prev_err = err;
         err = motor->desr_velocity - motor->curr_velocity;
-        prev_err = motor->curr_velocity - motor->prev_velocity;
         cum_err += err;
-        pwm = KP*err - KD*(err-prev_err) + KI*(cum_err);
-        motor->prev_velocity = motor->curr_velocity;
-        
-        if(pwm > 0)
-        {
-            gpio_set_level(motor->dir_0_pin,0);
-            gpio_set_level(motor->dir_1_pin,1);
+        motor->delta_duty_cycle = KP*err - KD*(err-prev_err) + KI*(cum_err);
+        motor->duty_cycle += motor->delta_duty_cycle;
+
+        if(motor->desr_velocity > 0){
+            if(motor->duty_cycle < 1)
+                motor->duty_cycle = 1;
         }
-        if(pwm < 0)
-        {
+        else if(motor->desr_velocity < 0){
+            if(motor->duty_cycle > -1)
+                motor->duty_cycle = -1;
+        }
+                
+        if(motor->duty_cycle > 100)
+            motor->duty_cycle = 100;
+        else if(motor->duty_cycle < -100)
+            motor->duty_cycle = -100;
+
+        if(motor->duty_cycle > 0){
             gpio_set_level(motor->dir_0_pin,1);
             gpio_set_level(motor->dir_1_pin,0);
         }
-        mcpwm_set_duty(motor->pwm.pwm_unit, motor->pwm.pwm_timer, motor->pwm.pwm_operator, abs(pwm));
+        else if(motor->duty_cycle < 0){
+            gpio_set_level(motor->dir_0_pin,0);
+            gpio_set_level(motor->dir_1_pin,1);
+        }
+        else{
+            gpio_set_level(motor->dir_0_pin,1);
+            gpio_set_level(motor->dir_1_pin,1);
+            // motor->duty_cycle = 100;
+        }
+        printf("\nMOTOR: %s,\tDES: %d,\tCURR: %d,\tDCYC:%d\t", motor->name, motor->desr_velocity, motor->curr_velocity, motor->duty_cycle);
+        printf("err: %d,\tdcyc: %d,\tdel_dcyc: %d\tKP: %f", err, motor->duty_cycle, motor->delta_duty_cycle, KP);
+        mcpwm_set_duty(motor->pwm.pwm_unit, motor->pwm.pwm_timer, motor->pwm.pwm_operator, abs(motor->duty_cycle));
         mcpwm_set_duty_type(motor->pwm.pwm_unit, motor->pwm.pwm_timer, motor->pwm.pwm_operator, MCPWM_DUTY_MODE_0);
     }
 }
