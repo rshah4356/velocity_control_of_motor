@@ -52,10 +52,13 @@ void app_main()
     init_gpio(ENCODER_PHASE_B_0,GPIO_MODE_INPUT);
     init_interrupt(ENCODER_PHASE_A_0);
 	gpio_isr_handler_add(ENCODER_PHASE_A_0, gpio_isr_handler_0, (void*) ENCODER_PHASE_B_0);
-	motor_0.desr_velocity = 100;
+	motor_0.desr_velocity = 70;
+	// motor_0.desr_velocity = 250;
+	// motor_0.desr_velocity = 369;
     // xTaskCreate(print_motor_status, "print_motor_status", 2048, &motor_0, 1, NULL);
      
-    xTaskCreatePinnedToCore(drive_motor, "drive_motor", 8192, &motor_0, 23, NULL, 1);
+    // xTaskCreatePinnedToCore(drive_motor, "drive_motor", 8192, &motor_0, 23, NULL, 1);
+    xTaskCreate(drive_motor, "drive_motor", 8192, &motor_0, 23, NULL);
     xTaskCreate(setup_velocity_calculator, "setup_velocity_calculator", 4096, NULL, 11, NULL); 
     while(1) 
     {

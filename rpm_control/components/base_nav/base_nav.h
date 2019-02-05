@@ -11,10 +11,10 @@
 
 #define ESP_INTR_FLAG_DEFAULT 0
 #ifndef KP
-    #define KP 0.05
+    #define KP 0.005
 #endif
 #ifndef KD
-    #define KD 0.1
+    #define KD 0.0
 #endif
 #ifndef KI
     #define KI 0.0
@@ -35,9 +35,9 @@ typedef struct{
     gpio_num_t dir_0_pin;
     gpio_num_t dir_1_pin;
     motor_pwm_t pwm;
-    int duty_cycle;
-    int prev_duty_cycle;
-    int delta_duty_cycle;
+    float duty_cycle;
+    float prev_duty_cycle;
+    float delta_duty_cycle;
 }motor_commander_t;
 
 

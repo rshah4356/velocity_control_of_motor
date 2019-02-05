@@ -1,0 +1,58 @@
+In archive /home/atharv/esp/avitra/velocity_control_of_motor/rpm_control/build/main/libmain.a:
+
+rpm_control.o:     file format elf32-xtensa-le
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .literal.calculate_velocity 0000001c  00000000  00000000  00000034  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .literal.setup_velocity_calculator 0000001c  00000000  00000000  00000050  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  2 .iram1.14.literal 00000008  00000000  00000000  0000006c  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  3 .literal.app_main 0000003c  00000000  00000000  00000074  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  4 .text         00000000  00000000  00000000  000000b0  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  5 .data         00000000  00000000  00000000  000000b0  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .bss          00000000  00000000  00000000  000000b0  2**0
+                  ALLOC
+  7 .text.calculate_velocity 00000031  00000000  00000000  000000b0  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  8 .rodata.str1.4 00000032  00000000  00000000  000000e4  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  9 .text.setup_velocity_calculator 00000038  00000000  00000000  00000118  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 10 .iram1.14     00000031  00000000  00000000  00000150  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 11 .text.app_main 00000069  00000000  00000000  00000184  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 12 .bss.ticks_count_0 00000004  00000000  00000000  000001f0  2**2
+                  ALLOC
+ 13 .data.motor_0 0000003c  00000000  00000000  000001f0  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+ 14 .debug_frame  00000070  00000000  00000000  0000022c  2**2
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 15 .debug_info   00000738  00000000  00000000  0000029c  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 16 .debug_abbrev 000001e9  00000000  00000000  000009d4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 17 .debug_loc    00000042  00000000  00000000  00000bbd  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 18 .debug_aranges 00000038  00000000  00000000  00000bff  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 19 .debug_ranges 00000028  00000000  00000000  00000c37  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 20 .debug_line   00000306  00000000  00000000  00000c5f  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 21 .debug_str    000007de  00000000  00000000  00000f65  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 22 .comment      0000003b  00000000  00000000  00001743  2**0
+                  CONTENTS, READONLY
+ 23 .xtensa.info  00000038  00000000  00000000  0000177e  2**0
+                  CONTENTS, READONLY
+ 24 .xt.lit       00000020  00000000  00000000  000017b6  2**0
+                  CONTENTS, RELOC, READONLY
+ 25 .xt.prop      000000f0  00000000  00000000  000017d6  2**0
+                  CONTENTS, RELOC, READONLY

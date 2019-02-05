@@ -39,7 +39,7 @@ void init_motor(motor_commander_t *motor){
 
 void print_motor_status(motor_commander_t *motor){
     while(1){
-        printf("\nMOTOR: %s,\tDES: %d,\tCURR: %d,\tDCYC:%d", motor->name, motor->desr_velocity, motor->curr_velocity, motor->duty_cycle);
+        printf("\nMOTOR: %s,\tDES: %d,\tCURR: %d,\tDCYC:%f", motor->name, motor->desr_velocity, motor->curr_velocity, motor->duty_cycle);
     }
 }
 
@@ -54,9 +54,10 @@ void drive_motor(motor_commander_t *motor){
         prev_err = err;
         err = motor->desr_velocity - motor->curr_velocity;
         cum_err += err;
-        motor->delta_duty_cycle = KP*err - KD*(err-prev_err) + KI*(cum_err);
+        motor->delta_duty_cycle = KP*err + KD*(err-prev_err) + KI*(cum_err);
         motor->duty_cycle += motor->delta_duty_cycle;
-
+        // if ((err & prev_err) | (1 << 15))  //check if err * prev_error < 0
+        //     cum_err = 0;
         if(motor->desr_velocity > 0){
             if(motor->duty_cycle < 1)
                 motor->duty_cycle = 1;
@@ -84,8 +85,8 @@ void drive_motor(motor_commander_t *motor){
             gpio_set_level(motor->dir_1_pin,1);
             // motor->duty_cycle = 100;
         }
-        printf("\nMOTOR: %s,\tDES: %d,\tCURR: %d,\tDCYC:%d\t", motor->name, motor->desr_velocity, motor->curr_velocity, motor->duty_cycle);
-        printf("err: %d,\tdcyc: %d,\tdel_dcyc: %d\tKP: %f", err, motor->duty_cycle, motor->delta_duty_cycle, KP);
+        printf("\nMOTOR: %s,\tDES: %d,\tCURR: %d,\tDCYC:%f\t", motor->name, motor->desr_velocity, motor->curr_velocity, motor->duty_cycle);
+        printf("err: %d,\tdcyc: %f,\tdel_dcyc: %f\tKP: %f", err, motor->duty_cycle, motor->delta_duty_cycle, KP);
         mcpwm_set_duty(motor->pwm.pwm_unit, motor->pwm.pwm_timer, motor->pwm.pwm_operator, abs(motor->duty_cycle));
         mcpwm_set_duty_type(motor->pwm.pwm_unit, motor->pwm.pwm_timer, motor->pwm.pwm_operator, MCPWM_DUTY_MODE_0);
     }
