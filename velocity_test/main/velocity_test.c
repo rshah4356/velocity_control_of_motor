@@ -6,13 +6,14 @@
 #include "freertos/task.h"
 // #include "freertos/queue.h"
 // #include "freertos/event_groups.h"
-#include "driver/gpio.h"
-#include "esp_attr.h"
-#include "driver/mcpwm.h"
-#include "soc/mcpwm_reg.h"
-#include "soc/mcpwm_struct.h"
-#include "esp_timer.h"
-#include "../../common_files/pin_defs_for_single_motor.h"
+// #include "driver/gpio.h"
+// #include "esp_attr.h"
+// #include "driver/mcpwm.h"
+// #include "soc/mcpwm_reg.h"
+// #include "soc/mcpwm_struct.h"
+// #include "esp_timer.h"
+#include "../components/pin_defs_for_motor/pin_defs_for_motor.h"
+#include "../components/base_nav/base_nav.h"
 
 #define ESP_INTR_FLAG_DEFAULT 0
 
@@ -23,22 +24,6 @@ static volatile int16_t ticks_count_0 = 0;
 
 static gpio_config_t io_conf;
 
-static void config_isr(int arg){
-    io_conf.intr_type = GPIO_PIN_INTR_NEGEDGE;
-    io_conf.mode = GPIO_MODE_INPUT;
-    io_conf.pin_bit_mask = ((uint64_t)1 << arg);
-    io_conf.pull_up_en = 1;
-    gpio_config(&io_conf);
-}
-
-static void config_gpio(int arg, gpio_mode_t GPIO_MODE){
-    io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
-    io_conf.pin_bit_mask = ((uint64_t)1 << arg);
-    io_conf.mode = GPIO_MODE;
-    io_conf.pull_up_en = 0;
-    io_conf.pull_down_en = 0;
-    gpio_config(&io_conf);
-}
 
 static void IRAM_ATTR gpio_isr_handler_0(void* arg){
     if(gpio_get_level(ENCODER_PHASE_B_0) == 0){
