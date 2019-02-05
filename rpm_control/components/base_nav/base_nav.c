@@ -56,8 +56,10 @@ void drive_motor(motor_commander_t *motor){
         cum_err += err;
         motor->delta_duty_cycle = KP*err + KD*(err-prev_err) + KI*(cum_err);
         motor->duty_cycle += motor->delta_duty_cycle;
-        // if ((err & prev_err) | (1 << 15))  //check if err * prev_error < 0
-        //     cum_err = 0;
+        if ((err ^ prev_err) & (1 << 15)){  //check if err * prev_error < 0
+            // printf("\n\n\n\n\nerr: %d, prev_err: %d, cum_err: %d\n\n\n\n\n\n\n", err, prev_err, cum_err);
+            cum_err = 0;
+        }
         if(motor->desr_velocity > 0){
             if(motor->duty_cycle < 1)
                 motor->duty_cycle = 1;
