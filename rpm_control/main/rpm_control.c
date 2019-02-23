@@ -18,7 +18,7 @@ motor_commander_t motor_0 = (motor_commander_t) {.name = "motor_0", .id = 0, .cu
 static volatile int ticks_count_0 = 0;
 
 static void IRAM_ATTR gpio_isr_handler_0(void* arg){
-    if(gpio_get_level(ENCODER_PHASE_B_0) == 0)
+    if(gpio_get_level((int) arg) == 0)
     {
         ticks_count_0++;
     }
@@ -58,11 +58,12 @@ void app_main()
     // xTaskCreate(print_motor_status, "print_motor_status", 2048, &motor_0, 1, NULL);
      
     // xTaskCreatePinnedToCore(drive_motor, "drive_motor", 8192, &motor_0, 23, NULL, 1);
-    xTaskCreate(drive_motor, "drive_motor", 8192, &motor_0, 23, NULL);
+    xTaskCreate(drive_motor, "drivemotor", 8192, &motor_0, 11, NULL);
     xTaskCreate(setup_velocity_calculator, "setup_velocity_calculator", 4096, NULL, 11, NULL); 
-    while(1) 
-    {
-        // printf("gpio = %d\t%d\n", gpio_get_level(ENCODER_PHASE_A_0), gpio_get_level(ENCODER_PHASE_B_0));
-        vTaskDelay(1 / portTICK_RATE_MS);
-    }
+    // while(1) 
+    // {
+    //     // printf("gpio = %d\t%d\n", gpio_get_level(ENCODER_PHASE_A_0), gpio_get_level(ENCODER_PHASE_B_0));
+    //     vTaskDelay(10 / portTICK_RATE_MS);
+    // }
+    vTaskDelete(NULL);
 }
