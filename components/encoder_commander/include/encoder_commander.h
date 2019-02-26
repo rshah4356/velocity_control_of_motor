@@ -1,7 +1,7 @@
 #ifndef _ENCODER_H
 #define _ENCODER_H
 
-#include "../init_sra/init_sra.h"
+#include "init_sra.h"
 
 typedef struct{
     char  name[10];

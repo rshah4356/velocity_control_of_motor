@@ -1,11 +1,11 @@
-#ifndef _BASE_NAV_H
-#define _BASE_NAV_H
+#ifndef _MOTOR_COMMANDER_H
+#define _MOTOR_COMMANDER_H
 
 #define KD_STEP 0.05
 #define KP_STEP 0.002
 
-#include "../init_sra/init_sra.h"
-#include "../encoder_commander/encoder_commander.h"
+#include "init_sra.h"
+#include "encoder_commander.h"
 // #include "driver/gpio.h"
 // #include "esp_attr.h"
 // #include "driver/mcpwm.h"

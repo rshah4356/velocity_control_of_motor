@@ -1,7 +1,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "./motor_commander.h"
-#include "../pin_defs/pin_defs.h"
+#include "motor_commander.h"
+#include "pin_defs.h"
 
 void init_motor(motor_commander_t* motor){
     init_mcpwm(&(motor->pwm_A));

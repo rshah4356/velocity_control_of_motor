@@ -4,9 +4,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#include "../../components/init_sra/init_sra.h"
-#include "../../components/pin_defs/pin_defs.h"
-#include "../../components/encoder_commander/encoder_commander.h"
+#include "init_sra.h"
+#include "pin_defs.h"
+#include "encoder_commander.h"
 
 encoder_commander_t encoder_0 = {.name = "ENCODER_0", .id = 0, .enc_intr = ENCODER_0_A, .enc_dir = ENCODER_0_B, .ticks_count = 0};
 

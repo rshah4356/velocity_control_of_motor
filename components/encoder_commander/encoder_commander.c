@@ -1,9 +1,9 @@
 #include "freertos/FreeRTOS.h"
 #include "esp_timer.h"
 #include "freertos/task.h"
-#include "./encoder_commander.h"
-#include "../init_sra/init_sra.h"
-#include "../pin_defs/pin_defs.h"
+#include "encoder_commander.h"
+// #include "../init_sra/init_sra.h"
+#include "pin_defs.h"
 
 
 void IRAM_ATTR enc_isr_handler(encoder_commander_t* encoder)
