@@ -34,6 +34,10 @@ void calculate_duty_cycle(motor_commander_t* motor){
 }
 
 void write_duty_cycle(motor_commander_t* motor){
+    if(motor->duty_cycle > 100)
+        motor->duty_cycle = 100;
+    else if(motor->duty_cycle < -100)
+        motor->duty_cycle = -100;
         // printf("MOTOR: %s,\tDES: %d,\tCURR: %d,\t", motor->name, motor->desr_rpm, motor->encoder.curr_rpm);
         // printf("pwm_pins: %d, %d,\t", motor->pwm_A.pwm_pin, motor->pwm_B.pwm_pin);
         // printf("err: %d,\tdcyc: %f,\tdel_dcyc: %f\tKP: %f\n", motor->err, motor->duty_cycle, motor->del_duty_cycle, motor->Kp);
@@ -52,15 +56,22 @@ void write_duty_cycle(motor_commander_t* motor){
         mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
     }
     else{
-        gpio_set_level(motor->pwm_A.pwm_pin, 1);
-        gpio_set_level(motor->pwm_B.pwm_pin, 1);
+        mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 0);
+        mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
+        // gpio_set_level(motor->pwm_B.pwm_pin, 0);
+        mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, 0);
+        mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
     }
+    // else{
+    //     gpio_set_level(motor->pwm_A.pwm_pin, 0);
+    //     gpio_set_level(motor->pwm_B.pwm_pin, 0);
+    // }
 }
 
 void drive_motor(motor_commander_t* motor){
     // init_motor(motor);
     while(1){
-        calculate_duty_cycle(motor);
+        // calculate_duty_cycle(motor);
         write_duty_cycle(motor);
         vTaskDelay(10 / portTICK_RATE_MS);
     }

@@ -11,7 +11,8 @@
 typedef struct{
     mcpwm_unit_t pwm_unit;
     mcpwm_timer_t pwm_timer;
-    mcpwm_io_signals_t pwm_operator;
+    mcpwm_io_signals_t pwm_io_signals;
+    mcpwm_operator_t pwm_operator;
     gpio_num_t pwm_pin;
 }mcpwm_t;
 

@@ -13,7 +13,7 @@
 // int pwm = 0;
 // int motor_velocity;
 
-motor_commander_t motor_0 = (motor_commander_t) {.name = "motor_0", .id = 0, .curr_velocity = 0, .desr_velocity = 0, .Kp = 0.005, .dir_0_pin = MOTOR_0_A, .dir_1_pin = MOTOR_0_B, .enc_intr = ENCODER_PHASE_A_0, .enc_dir = ENCODER_PHASE_B_0, .pwm.pwm_unit = MCPWM_UNIT_0, .pwm.pwm_operator = MCPWM0A, .pwm.pwm_timer = MCPWM_TIMER_0, .pwm.pwm_pin = MOTOR_0_PWM };
+motor_commander_t motor_0 = (motor_commander_t) {.name = "motor_0", .id = 0, .curr_velocity = 0, .desr_velocity = 0, .Kp = 0.005, .dir_0_pin = MOTOR_0_A, .dir_1_pin = MOTOR_F_B, .enc_intr = ENCODER_PHASE_F_A, .enc_dir = ENCODER_PHASE_F_B, .pwm.pwm_unit = MCPWM_UNIT_0, .pwm.pwm_operator = MCPWM0A, .pwm.pwm_timer = MCPWM_TIMER_0, .pwm.pwm_pin = MOTOR_F_PWM };
 
 static volatile int ticks_count_0 = 0;
 
