@@ -160,6 +160,55 @@ void read_bot_motion_command_on_uart_with_buffer(uint8_t* data_buffer){
     }
 }
 
+void read_bot_motion_command_on_uart(uint8_t* data_buffer){
+    uart_port_t uart_num = UART_NUM_1;
+    while(true){
+        int len = uart_read_bytes(uart_num, data_buffer, BUF_SIZE, 20 / portTICK_RATE_MS);
+        int command = *data_buffer;
+        int pwm = 0;
+        if((command >= 1) && (command <= 99)){
+            pwm = command - 50;
+            motor_F.duty_cycle = 0;
+            motor_B.duty_cycle = 0;
+            if(abs(pwm) < 20):
+                motor_L.duty_cycle = 0;
+                motor_R.duty_cycle = 0;
+            else:
+                motor_L.duty_cycle = pwm;
+                motor_R.duty_cycle = pwm;
+        }
+        else if((command >= 101) && (command <= 199)){
+            pwm = command - 150;
+            if(abs(pwm) < 20):
+                motor_F.duty_cycle = 0;
+                motor_B.duty_cycle = 0;
+            else:
+                motor_F.duty_cycle = pwm;
+                motor_B.duty_cycle = pwm;
+            motor_L.duty_cycle = 0;
+            motor_R.duty_cycle = 0;
+        }
+        else{
+            motor_F.duty_cycle = 0;
+            motor_B.duty_cycle = 0;
+            motor_L.duty_cycle = 0;
+            motor_R.duty_cycle = 0;
+        }
+        printf("uart_data_received: %d\n", *data_buffer);
+        // printf("FFFFFF");
+        write_duty_cycle(&motor_F);
+        // printf("LLLLLL");
+        // write_duty_cycle(&motor_L);
+        // printf("BBBBBB");
+        // write_duty_cycle(&motor_B);
+        // printf("RRRRRR");
+        // write_duty_cycle(&motor_R);
+        // printf("OOOOOOOOOVVVVVVER");
+        printf("motor duty cycles: %f\t%f\t%f\t%f\n", motor_F.duty_cycle, motor_B.duty_cycle, motor_L.duty_cycle, motor_R.duty_cycle);
+        vTaskDelay(40 / portTICK_RATE_MS);
+    }
+}
+
 void app_main(){
     init_uart(uart_config, UART_NUM_1);
     init_motor(&motor_F);
@@ -168,7 +217,7 @@ void app_main(){
     init_motor(&motor_B);
     uint8_t *uart_rx_buffer = (uint8_t *) malloc(BUF_SIZE);
     uint8_t *uart_tx_buffer = (uint8_t *) malloc(BUF_SIZE);
-    xTaskCreate(read_bot_motion_command_on_uart_without_padding_without_mapping, "tele_op_receiver", 8192, &uart_rx_buffer, 22, NULL);
+    xTaskCreate(read_bot_motion_command_on_uart, "tele_op_receiver", 8192, &uart_rx_buffer, 22, NULL);
     // xTaskCreate(write_duty_cycle, "drive_motor F", 8192, &motor_F, 23, NULL);
     // xTaskCreate(write_duty_cycle, "drive_motor L", 8192, &motor_L, 23, NULL);
     // xTaskCreate(write_duty_cycle, "drive_motor R", 8192, &motor_R, 23, NULL);
