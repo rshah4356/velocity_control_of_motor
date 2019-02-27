@@ -5,7 +5,8 @@
 #include "driver/mcpwm.h"
 #include "soc/mcpwm_reg.h"
 #include "soc/mcpwm_struct.h"
-
+#include "driver/uart.h"
+#include "pin_defs.h"
 
 typedef struct{
     mcpwm_unit_t pwm_unit;
@@ -20,5 +21,7 @@ void init_gpio(gpio_num_t NUM_GPIO, gpio_mode_t GPIO_MODE);
 // void init_gpio2(gpio_num_t NUM_GPIO, gpio_mode_t GPIO_MODE);
 
 void init_mcpwm(mcpwm_t* motor);
+
+void init_uart(uart_config_t uart_config, uart_port_t uart_num);
 
 #endif

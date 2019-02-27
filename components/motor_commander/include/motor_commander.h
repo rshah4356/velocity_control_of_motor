@@ -42,6 +42,6 @@ void drive_motor(motor_commander_t *motor);
 
 void print_motor_status(motor_commander_t *motor);
 
-void tune_pid(motor_commander_t *motor);
+// void tune_pid(motor_commander_t *motor);
 
 #endif

@@ -1,0 +1,44 @@
+In archive /home/atharv/esp/avitra/velocity_control_of_motor/uart_echo/build/main/libmain.a:
+
+uart_echo.o:     file format elf32-xtensa-le
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .literal.echo_task 00000034  00000000  00000000  00000034  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .literal.app_main 00000014  00000000  00000000  00000068  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  2 .text         00000000  00000000  00000000  0000007c  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  3 .data         00000000  00000000  00000000  0000007c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  4 .bss          00000000  00000000  00000000  0000007c  2**0
+                  ALLOC
+  5 .rodata.str1.4 0000001b  00000000  00000000  0000007c  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  6 .text.echo_task 00000097  00000000  00000000  00000098  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  7 .text.app_main 0000001f  00000000  00000000  00000130  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  8 .debug_frame  00000040  00000000  00000000  00000150  2**2
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+  9 .debug_info   0000062b  00000000  00000000  00000190  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 10 .debug_abbrev 00000189  00000000  00000000  000007bb  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_aranges 00000028  00000000  00000000  00000944  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 12 .debug_ranges 00000018  00000000  00000000  0000096c  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 13 .debug_line   00000292  00000000  00000000  00000984  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 14 .debug_str    000006bd  00000000  00000000  00000c16  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 15 .comment      0000003b  00000000  00000000  000012d3  2**0
+                  CONTENTS, READONLY
+ 16 .xtensa.info  00000038  00000000  00000000  0000130e  2**0
+                  CONTENTS, READONLY
+ 17 .xt.lit       00000010  00000000  00000000  00001346  2**0
+                  CONTENTS, RELOC, READONLY
+ 18 .xt.prop      0000006c  00000000  00000000  00001356  2**0
+                  CONTENTS, RELOC, READONLY

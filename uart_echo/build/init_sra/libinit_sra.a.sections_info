@@ -1,0 +1,52 @@
+In archive /home/atharv/esp/avitra/velocity_control_of_motor/uart_echo/build/init_sra/libinit_sra.a:
+
+init_sra.o:     file format elf32-xtensa-le
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .literal.init_uart 00000018  00000000  00000000  00000034  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .literal.init_interrupt 00000018  00000000  00000000  0000004c  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  2 .literal.init_gpio 00000014  00000000  00000000  00000064  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  3 .literal.init_mcpwm 0000000c  00000000  00000000  00000078  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  4 .text         00000000  00000000  00000000  00000084  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  5 .data         00000000  00000000  00000000  00000084  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .bss          00000000  00000000  00000000  00000084  2**0
+                  ALLOC
+  7 .rodata.str1.4 0000007c  00000000  00000000  00000084  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  8 .text.init_uart 0000004e  00000000  00000000  00000100  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  9 .text.init_interrupt 0000004e  00000000  00000000  00000150  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 10 .text.init_gpio 0000004b  00000000  00000000  000001a0  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 11 .text.init_mcpwm 00000032  00000000  00000000  000001ec  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 12 .debug_frame  00000070  00000000  00000000  00000220  2**2
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 13 .debug_info   00000874  00000000  00000000  00000290  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 14 .debug_abbrev 0000010c  00000000  00000000  00000b04  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 15 .debug_aranges 00000038  00000000  00000000  00000c10  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 16 .debug_ranges 00000028  00000000  00000000  00000c48  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 17 .debug_line   0000029f  00000000  00000000  00000c70  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 18 .debug_str    00000aa5  00000000  00000000  00000f0f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 19 .comment      0000003b  00000000  00000000  000019b4  2**0
+                  CONTENTS, READONLY
+ 20 .xtensa.info  00000038  00000000  00000000  000019ef  2**0
+                  CONTENTS, READONLY
+ 21 .xt.lit       00000020  00000000  00000000  00001a27  2**0
+                  CONTENTS, RELOC, READONLY
+ 22 .xt.prop      000000c0  00000000  00000000  00001a47  2**0
+                  CONTENTS, RELOC, READONLY

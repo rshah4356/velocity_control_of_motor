@@ -1,9 +1,16 @@
 #include "init_sra.h"
 #define ESP_INTR_FLAG_DEFAULT 0
 
-static gpio_config_t io_conf;
+
+void init_uart(uart_config_t uart_config, uart_port_t uart_num){
+    uart_param_config(uart_num, &uart_config);
+    uart_set_pin(uart_num, ECHO_TEST_TXD, ECHO_TEST_RXD, ECHO_TEST_RTS, ECHO_TEST_CTS);
+    uart_driver_install(uart_num, BUF_SIZE * 2, 0, 0, NULL, 0);
+    printf("init_uart(uart_num = %d) ENDS\n", uart_num);
+}
 
 void init_interrupt(gpio_num_t NUM_GPIO){
+    gpio_config_t io_conf;
     printf("init_interrupt(%d)\n", NUM_GPIO);
     io_conf.intr_type = GPIO_INTR_POSEDGE;
     io_conf.mode = GPIO_MODE_INPUT;
@@ -15,6 +22,7 @@ void init_interrupt(gpio_num_t NUM_GPIO){
 }
 
 void init_gpio(gpio_num_t NUM_GPIO, gpio_mode_t GPIO_MODE){
+    gpio_config_t io_conf;
     printf("init_gpio(%d, %u)\n", NUM_GPIO, GPIO_MODE);
     io_conf.intr_type = GPIO_INTR_DISABLE;
     io_conf.mode = GPIO_MODE;
