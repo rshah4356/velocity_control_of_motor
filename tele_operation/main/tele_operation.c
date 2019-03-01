@@ -172,24 +172,24 @@ void read_bot_motion_command_on_uart(uint8_t* data_buffer){
             case 25:
                 motor_F.duty_cycle = 0;
                 motor_B.duty_cycle = 0;
-                motor_L.duty_cycle = 65;
-                motor_R.duty_cycle = 65;
+                motor_L.duty_cycle = 75;
+                motor_R.duty_cycle = 75;
                 break;
             case 75:
                 motor_F.duty_cycle = 0;
                 motor_B.duty_cycle = 0;
-                motor_L.duty_cycle = -65;
-                motor_R.duty_cycle = -65;
+                motor_L.duty_cycle = -75;
+                motor_R.duty_cycle = -75;
                 break;
             case 125:
-                motor_F.duty_cycle = 65;
-                motor_B.duty_cycle = 65;
+                motor_F.duty_cycle = 75;
+                motor_B.duty_cycle = 75;
                 motor_L.duty_cycle = 0;
                 motor_R.duty_cycle = 0;
                 break;
             case 175:
-                motor_F.duty_cycle = -65;
-                motor_B.duty_cycle = -65;
+                motor_F.duty_cycle = -75;
+                motor_B.duty_cycle = -75;
                 motor_L.duty_cycle = 0;
                 motor_R.duty_cycle = 0;
                 break;
@@ -391,25 +391,6 @@ void read_bot_motion_command_on_uart(uint8_t* data_buffer){
         //     gpio_set_level(motor->pwm_A.pwm_pin, 1);
         //     gpio_set_level(motor->pwm_B.pwm_pin, 1);
         // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // printf("OOOOOOOOOVVVVVVER");
         vTaskDelay(10 / portTICK_RATE_MS);
     }
