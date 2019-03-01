@@ -148,7 +148,7 @@ void read_bot_motion_command_on_uart_with_buffer(uint8_t* data_buffer){
         }
         printf("uart_data_received: %d\n", *data_buffer);
         // printf("FFFFFF");
-        write_duty_cycle(&motor_F);
+        // write_duty_cycle(&motor_F);
         // printf("LLLLLL");
         // write_duty_cycle(&motor_L);
         // printf("BBBBBB");
@@ -167,106 +167,73 @@ void read_bot_motion_command_on_uart(uint8_t* data_buffer){
     while(true){
         uart_read_bytes(uart_num, data_buffer, BUF_SIZE, 20 / portTICK_RATE_MS);
         int command = *data_buffer;
-        switch (command)
-        {
-            case 25:
-                motor_F.duty_cycle = 0;
-                motor_B.duty_cycle = 0;
-                motor_L.duty_cycle = 65;
-                motor_R.duty_cycle = 65;
-                break;
-            case 75:
-                motor_F.duty_cycle = 0;
-                motor_B.duty_cycle = 0;
-                motor_L.duty_cycle = -65;
-                motor_R.duty_cycle = -65;
-                break;
-            case 125:
-                motor_F.duty_cycle = 65;
-                motor_B.duty_cycle = 65;
-                motor_L.duty_cycle = 0;
-                motor_R.duty_cycle = 0;
-                break;
-            case 175:
-                motor_F.duty_cycle = -65;
-                motor_B.duty_cycle = -65;
-                motor_L.duty_cycle = 0;
-                motor_R.duty_cycle = 0;
-                break;
-            default:
-                motor_F.duty_cycle = 0;
-                motor_B.duty_cycle = 0;
-                motor_L.duty_cycle = 0;
-                motor_R.duty_cycle = 0;
-                break;
-        }
-        int pwm = 0;
-        //     motor_F.duty_cycle = 0;
-        //     motor_B.duty_cycle = 0;
-        //     motor_L.duty_cycle = 0;
-        //     motor_R.duty_cycle = 0;
-        // if(command == 25){
-        //     motor_F.duty_cycle = 0;
-        //     motor_B.duty_cycle = 0;
-        //     motor_L.duty_cycle = 75;
-        //     motor_R.duty_cycle = 75;
-        // }
-        // else if(command == 75){
-        //     motor_F.duty_cycle = 0;
-        //     motor_B.duty_cycle = 0;
-        //     motor_L.duty_cycle = -75;
-        //     motor_R.duty_cycle = -75;
-        // }
-        // else if(command == 125){
-        //     motor_F.duty_cycle = 75;
-        //     motor_B.duty_cycle = 75;
-        //     motor_L.duty_cycle = 0;
-        //     motor_R.duty_cycle = 0;
-        // }
-        // else if(command == 175){
-        //     motor_F.duty_cycle = -75;
-        //     motor_B.duty_cycle = -75;
-        //     motor_L.duty_cycle = 0;
-        //     motor_R.duty_cycle = 0;
-        // }
-        // else{
-        //     motor_F.duty_cycle = 0;
-        //     motor_B.duty_cycle = 0;
-        //     motor_L.duty_cycle = 0;
-        //     motor_R.duty_cycle = 0;
-        // }
-        // if((command >= 1) && (command <= 99)){
-        //     pwm =  -70; //2*(command - 50);
-        //     motor_F.duty_cycle = 0;
-        //     motor_B.duty_cycle = 0;
-        //     if(command == 50){
-        //         motor_L.duty_cycle = 0;
-        //         motor_R.duty_cycle = 0;
-        //     }
-        //     else{
-        //         motor_L.duty_cycle = pwm;
-        //         motor_R.duty_cycle = pwm;
-        //     }
-        // }
-        // else if((command >= 101) && (command <= 199)){
-        //     pwm = 70; //2* (command - 150);
-        //     if(command == 50){
+        // switch (command)
+        // {
+        //     case 25:
         //         motor_F.duty_cycle = 0;
         //         motor_B.duty_cycle = 0;
-        //     }
-        //     else{
-        //         motor_F.duty_cycle = pwm;
-        //         motor_B.duty_cycle = pwm;
-        //     }
-        //     motor_L.duty_cycle = 0;
-        //     motor_R.duty_cycle = 0;
+        //         motor_L.duty_cycle = 65;
+        //         motor_R.duty_cycle = 65;
+        //         break;
+        //     case 75:
+        //         motor_F.duty_cycle = 0;
+        //         motor_B.duty_cycle = 0;
+        //         motor_L.duty_cycle = -65;
+        //         motor_R.duty_cycle = -65;
+        //         break;
+        //     case 125:
+        //         motor_F.duty_cycle = 65;
+        //         motor_B.duty_cycle = 65;
+        //         motor_L.duty_cycle = 0;
+        //         motor_R.duty_cycle = 0;
+        //         break;
+        //     case 175:
+        //         motor_F.duty_cycle = -65;
+        //         motor_B.duty_cycle = -65;
+        //         motor_L.duty_cycle = 0;
+        //         motor_R.duty_cycle = 0;
+        //         break;
+        //     default:
+        //         motor_F.duty_cycle = 0;
+        //         motor_B.duty_cycle = 0;
+        //         motor_L.duty_cycle = 0;
+        //         motor_R.duty_cycle = 0;
+        //         break;
         // }
-        // else{
-        //     motor_F.duty_cycle = 0;
-        //     motor_B.duty_cycle = 0;
-        //     motor_L.duty_cycle = 0;
-        //     motor_R.duty_cycle = 0;
-        // }
+        int pwm = 0;
+        if((command >= 1) && (command <= 99)){
+            pwm = 2*(command - 50);
+            motor_F.duty_cycle = 0;
+            motor_B.duty_cycle = 0;
+            if(command == 50){
+                motor_L.duty_cycle = 0;
+                motor_R.duty_cycle = 0;
+            }
+            else{
+                motor_L.duty_cycle = pwm;
+                motor_R.duty_cycle = -pwm;
+            }
+        }
+        else if((command >= 101) && (command <= 199)){
+            pwm = 2* (command - 150);
+            motor_F.duty_cycle = pwm;
+            motor_B.duty_cycle = -pwm;
+            motor_L.duty_cycle = 0;
+            motor_R.duty_cycle = 0;
+        }
+        else if((command >= 200) && (command <= 250)){
+            pwm = 1.5*(command - 225);
+            motor_F.duty_cycle = pwm;
+            motor_B.duty_cycle = pwm;
+            motor_L.duty_cycle = pwm;
+            motor_R.duty_cycle = pwm;
+        }
+        else{
+            motor_F.duty_cycle = 0;
+            motor_B.duty_cycle = 0;
+            motor_L.duty_cycle = 0;
+            motor_R.duty_cycle = 0;
+        }
         printf("uart_data_received: %d, command: %d, pwm %d\n", *data_buffer, command, pwm);
         printf("motor duty cycles: %f\t%f\t%f\t%f\n", motor_F.duty_cycle, motor_B.duty_cycle, motor_L.duty_cycle, motor_R.duty_cycle);
         // printf("FFFFFF");
@@ -281,133 +248,6 @@ void read_bot_motion_command_on_uart(uint8_t* data_buffer){
         // printf("RRRRRR");
         // motor_commander_t* motor_R_ptr = &motor_R;
         // write_duty_cycle(motor_R_ptr);
-
-
-
-        // motor_commander_t* motor = &motor_F;
-        // // printf("err: %d,\tdcyc: %f,\tdel_dcyc: %f\tKP: %f\n", motor->err, motor->duty_cycle, motor->del_duty_cycle, motor->Kp);
-        // printf("MOTOR FFFFFF\t %d, %d, ", motor->pwm_A.pwm_pin, motor->pwm_B.pwm_pin);
-        // if(motor->duty_cycle > 0){
-        //     printf(" 111111111\n");
-        //     // mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 0);
-        //     // mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
-        //     gpio_set_level(motor->pwm_A.pwm_pin, 0);
-        //     gpio_set_level(motor->pwm_B.pwm_pin, 1);
-        //     // mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, abs(motor->duty_cycle));
-        //     // mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
-        // }
-        // else if(motor->duty_cycle < 0){
-        //     printf(" 222222222\n");
-        //     // mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, abs(motor->duty_cycle));
-        //     // mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
-        //     gpio_set_level(motor->pwm_B.pwm_pin, 0);
-        //     gpio_set_level(motor->pwm_A.pwm_pin, 1);
-        //     // mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, 0);
-        //     // mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
-        // }
-        // else{
-        //     printf(" 333333333\n");
-        //     gpio_set_level(motor->pwm_A.pwm_pin, 1);
-        //     gpio_set_level(motor->pwm_B.pwm_pin, 1);
-        // }
-
-        // motor = &motor_L;
-        // printf("MOTOR LLLLLL\t %d, %d, ", motor->pwm_A.pwm_pin, motor->pwm_B.pwm_pin);
-        // // printf("err: %d,\tdcyc: %f,\tdel_dcyc: %f\tKP: %f\n", motor->err, motor->duty_cycle, motor->del_duty_cycle, motor->Kp);
-        // if(motor->duty_cycle > 0){
-        //     // mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 0);
-        //     // mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
-        //     printf(" 111111111\n");
-        //     gpio_set_level(motor->pwm_A.pwm_pin, 0);
-        //     mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, abs(motor->duty_cycle));
-        //     mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
-        // }
-        // else if(motor->duty_cycle < 0){
-        //     printf(" 222222222\n");
-        //     mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, abs(motor->duty_cycle));
-        //     mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
-        //     gpio_set_level(motor->pwm_B.pwm_pin, 0);
-        //     // mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, 0);
-        //     // mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
-        // }
-        // else{
-        //     printf(" 333333333\n");
-        //     gpio_set_level(motor->pwm_A.pwm_pin, 1);
-        //     gpio_set_level(motor->pwm_B.pwm_pin, 1);
-        // }
-
-
-
-
-        // motor = &motor_B;
-        // printf("MOTOR BBBBBBB\t %d, %d, ", motor->pwm_A.pwm_pin, motor->pwm_B.pwm_pin);
-        // // printf("err: %d,\tdcyc: %f,\tdel_dcyc: %f\tKP: %f\n", motor->err, motor->duty_cycle, motor->del_duty_cycle, motor->Kp);
-        // if(motor->duty_cycle > 0){
-        //     // mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 0);
-        //     // mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
-        //     printf(" 111111111\n");
-        //     gpio_set_level(motor->pwm_A.pwm_pin, 0);
-        //     mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, abs(motor->duty_cycle));
-        //     mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
-        // }
-        // else if(motor->duty_cycle < 0){
-        //     printf(" 222222222\n");
-        //     mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, abs(motor->duty_cycle));
-        //     mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
-        //     gpio_set_level(motor->pwm_B.pwm_pin, 0);
-        //     // mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, 0);
-        //     // mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
-        // }
-        // else{
-        //     printf(" 333333333\n");
-        //     gpio_set_level(motor->pwm_A.pwm_pin, 1);
-        //     gpio_set_level(motor->pwm_B.pwm_pin, 1);
-        // }
-
-
-
-
-        // motor = &motor_R;
-        // printf("MOTOR RRRRRR\t %d, %d, ", motor->pwm_A.pwm_pin, motor->pwm_B.pwm_pin);
-        // // printf("err: %d,\tdcyc: %f,\tdel_dcyc: %f\tKP: %f\n", motor->err, motor->duty_cycle, motor->del_duty_cycle, motor->Kp);
-        // if(motor->duty_cycle > 0){
-        //     // mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 0);
-        //     // mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
-        //     printf(" 111111111\n");
-        //     gpio_set_level(motor->pwm_A.pwm_pin, 0);
-        //     mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, abs(motor->duty_cycle));
-        //     mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
-        // }
-        // else if(motor->duty_cycle < 0){
-        //     printf(" 222222222\n");
-        //     mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, abs(motor->duty_cycle));
-        //     mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
-        //     gpio_set_level(motor->pwm_B.pwm_pin, 0);
-        //     // mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, 0);
-        //     // mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
-        // }
-        // else{
-        //     printf(" 333333333\n");
-        //     gpio_set_level(motor->pwm_A.pwm_pin, 1);
-        //     gpio_set_level(motor->pwm_B.pwm_pin, 1);
-        // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         // printf("OOOOOOOOOVVVVVVER");
@@ -431,46 +271,11 @@ void app_main(){
     init_motor(&motor_R);
     uint8_t *uart_rx_buffer = (uint8_t *) malloc(BUF_SIZE);
     // uint8_t *uart_tx_buffer = (uint8_t *) malloc(BUF_SIZE);
-    // gpio_set_level(13, 0);    gpio_set_level(12, 1);
-    // gpio_set_level(18, 0);    gpio_set_level(19, 1);
-    // gpio_set_level(25, 0);    gpio_set_level(23, 1);
-    // gpio_set_level(21, 0);    gpio_set_level(22, 1);
     xTaskCreate(read_bot_motion_command_on_uart, "tele_op_receiver", 8192, &uart_rx_buffer, 22, NULL);
     xTaskCreate(write_duty_cycle_loop, "drive_motor F", 8192, &motor_F, 23, NULL);
     xTaskCreate(write_duty_cycle_loop, "drive_motor L", 8192, &motor_L, 23, NULL);
     xTaskCreate(write_duty_cycle_loop, "drive_motor R", 8192, &motor_R, 23, NULL);
     xTaskCreate(write_duty_cycle_loop, "drive_motor B", 8192, &motor_B, 23, NULL);
-    // xTaskCreate(print_motor_status, "print_motor_status F", 2048, &motor_F, 11, NULL);
-    // xTaskCreate(print_motor_status, "print_motor_status L", 2048, &motor_L, 11, NULL);
-    // xTaskCreate(print_motor_status, "print_motor_status B", 2048, &motor_B, 11, NULL);
-    // xTaskCreate(print_motor_status, "print_motor_status R", 2048, &motor_R, 11, NULL);
-    // motor_commander_t* motor = &motor_B;
-    // calculate_duty_cycle(motor);
-    // mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 50);
-    // mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
-    // mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, 0);
-    // mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
-
-    // motor = &motor_F;
-    // calculate_duty_cycle(motor);
-    // mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 0);
-    // mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
-    // mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, 50);
-    // mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
-    
-    // motor = &motor_L;
-    // calculate_duty_cycle(motor);
-    // mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 0);
-    // mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
-    // mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, 50);
-    // mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
-
-    // motor = &motor_R;
-    // calculate_duty_cycle(motor);
-    // mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 0);
-    // mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
-    // mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, 50);
-    // mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
     
     while(true){
         vTaskDelay(40 / portTICK_RATE_MS);
