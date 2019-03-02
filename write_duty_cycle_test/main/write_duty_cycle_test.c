@@ -40,41 +40,42 @@ motor_commander_t motor_B_ = (motor_commander_t) {.name = "MOTOR_B", .id = 0, .d
 
 void write_duty_cycle_loop(motor_commander_t* motor){
     while(1){
-        for(int i = 0; i < 100; i++){
-            vTaskDelay(10 / portTICK_RATE_MS);
-            motor->duty_cycle = 0;
+
+        // for(int i = 0; i < 100; i++){
+            // vTaskDelay(10 / portTICK_RATE_MS);
+            motor->duty_cycle = 25;
             write_duty_cycle(motor);
-        }
-        for(int i = 0; i < 100; i++){
-            vTaskDelay(10 / portTICK_RATE_MS);
-            motor->duty_cycle = i;
-            write_duty_cycle(motor);
-        }
-        for(int i = 100; i > 0; i--){
-            vTaskDelay(10 / portTICK_RATE_MS);
-            motor->duty_cycle = i;
-            write_duty_cycle(motor);
-        }
-        for(int i = 0; i < 100; i++){
-            vTaskDelay(10 / portTICK_RATE_MS);
-            motor->duty_cycle = 0;
-            write_duty_cycle(motor);
-        }
-        for(int i = 0; i > -100; i--){
-            vTaskDelay(10 / portTICK_RATE_MS);
-            motor->duty_cycle = i;
-            write_duty_cycle(motor);
-        }
-        for(int i = -100; i < 0; i++){
-            vTaskDelay(10 / portTICK_RATE_MS);
-            motor->duty_cycle = i;
-            write_duty_cycle(motor);
-        }
-        for(int i = 0; i < 100; i++){
-            vTaskDelay(10 / portTICK_RATE_MS);
-            motor->duty_cycle = 0;
-            write_duty_cycle(motor);
-        }
+        // }
+        // for(int i = 0; i < 100; i++){
+            // vTaskDelay(10 / portTICK_RATE_MS);
+            // motor->duty_cycle = i;
+            // write_duty_cycle(motor);
+        // }
+        // for(int i = 100; i > 0; i--){
+            // vTaskDelay(10 / portTICK_RATE_MS);
+            // motor->duty_cycle = i;
+            // write_duty_cycle(motor);
+        // }
+        // for(int i = 0; i < 100; i++){
+            // vTaskDelay(10 / portTICK_RATE_MS);
+            // motor->duty_cycle = 0;
+            // write_duty_cycle(motor);
+        // }
+        // for(int i = 0; i > -100; i--){
+            // vTaskDelay(10 / portTICK_RATE_MS);
+            // motor->duty_cycle = i;
+            // write_duty_cycle(motor);
+        // }
+        // for(int i = -100; i < 0; i++){
+            // vTaskDelay(10 / portTICK_RATE_MS);
+            // motor->duty_cycle = i;
+            // write_duty_cycle(motor);
+        // }
+        // for(int i = 0; i < 100; i++){
+            // vTaskDelay(10 / portTICK_RATE_MS);
+            // motor->duty_cycle = 0;
+            // write_duty_cycle(motor);
+        // }
         vTaskDelay(10 / portTICK_RATE_MS);
     }
 }
