@@ -1,13 +1,13 @@
 #ifndef PIN_DEFS_H
     #define PIN_DEFS
 
-    #define MOTOR_F_PWM_A   13
-    #define MOTOR_F_PWM_B   12
+    #define MOTOR_F_PWM_A   12
+    #define MOTOR_F_PWM_B   13
     #define ENCODER_F_A     33
     #define ENCODER_F_B     32
     
-    #define MOTOR_R_PWM_A   19
-    #define MOTOR_R_PWM_B   18
+    #define MOTOR_R_PWM_A   18
+    #define MOTOR_R_PWM_B   19
     #define ENCODER_R_A     35
     #define ENCODER_R_B     34
     

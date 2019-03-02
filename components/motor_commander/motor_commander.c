@@ -34,26 +34,45 @@ void calculate_duty_cycle(motor_commander_t* motor){
 }
 
 void write_duty_cycle(motor_commander_t* motor){
-    if(motor->duty_cycle > 100)
-        motor->duty_cycle = 100;
-    else if(motor->duty_cycle < -100)
-        motor->duty_cycle = -100;
         // printf("MOTOR: %s,\tDES: %d,\tCURR: %d,\t", motor->name, motor->desr_rpm, motor->encoder.curr_rpm);
         // printf("pwm_pins: %d, %d,\t", motor->pwm_A.pwm_pin, motor->pwm_B.pwm_pin);
         // printf("err: %d,\tdcyc: %f,\tdel_dcyc: %f\tKP: %f\n", motor->err, motor->duty_cycle, motor->del_duty_cycle, motor->Kp);
     if(motor->duty_cycle > 0){
+<<<<<<< HEAD
         // mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 0);
         // mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
         gpio_set_level(motor->pwm_A.pwm_pin, 0);
+=======
+        if(motor->duty_cycle > 100)
+            motor->duty_cycle = 100;
+        mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 0);
+        mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
+        // gpio_set_level(motor->pwm_A.pwm_pin, 0);
+>>>>>>> 3ee4beceaefedc1f6bc495631040e8217d46d7ca
         mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, abs(motor->duty_cycle));
         mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
     }
     else if(motor->duty_cycle < 0){
+        if(motor->duty_cycle < -100)
+            motor->duty_cycle = -100;
         mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, abs(motor->duty_cycle));
         mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
+<<<<<<< HEAD
         gpio_set_level(motor->pwm_B.pwm_pin, 0);
         // mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, 0);
         // mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
+=======
+        // gpio_set_level(motor->pwm_B.pwm_pin, 0);
+        mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, 0);
+        mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
+    }
+    else{
+        mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 100);
+        mcpwm_set_duty_type(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, MCPWM_DUTY_MODE_0);
+        // gpio_set_level(motor->pwm_B.pwm_pin, 0); 
+        mcpwm_set_duty(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, 100);
+        mcpwm_set_duty_type(motor->pwm_B.pwm_unit, motor->pwm_B.pwm_timer, motor->pwm_B.pwm_operator, MCPWM_DUTY_MODE_0);
+>>>>>>> 3ee4beceaefedc1f6bc495631040e8217d46d7ca
     }
     // else{
     //     mcpwm_set_duty(motor->pwm_A.pwm_unit, motor->pwm_A.pwm_timer, motor->pwm_A.pwm_operator, 0);
