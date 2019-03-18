@@ -8,8 +8,8 @@
     
     #define MOTOR_R_PWM_A   19
     #define MOTOR_R_PWM_B   18
-    #define ENCODER_R_A     35
-    #define ENCODER_R_B     34
+    #define ENCODER_R_A     34
+    #define ENCODER_R_B     35
     
     #define MOTOR_B_PWM_A   21
     #define MOTOR_B_PWM_B   22
@@ -18,11 +18,11 @@
     
     #define MOTOR_L_PWM_A   25
     #define MOTOR_L_PWM_B   23
-    #define ENCODER_L_A     39
-    #define ENCODER_L_B     36
+    #define ENCODER_L_A     36
+    #define ENCODER_L_B     39
     
-    #define ECHO_TEST_TXD  (35)
-    #define ECHO_TEST_RXD  (34)
+    #define ECHO_TEST_TXD  (1)
+    #define ECHO_TEST_RXD  (3)
     #define ECHO_TEST_RTS  (UART_PIN_NO_CHANGE)
     #define ECHO_TEST_CTS  (UART_PIN_NO_CHANGE)
 
