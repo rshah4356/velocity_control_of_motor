@@ -163,43 +163,10 @@ void read_bot_motion_command_on_uart_with_buffer(uint8_t* data_buffer){
 */
 
 void read_bot_motion_command_on_uart(uint8_t* data_buffer){
-    uart_port_t uart_num = UART_NUM_1;
+    uart_port_t uart_num = UART_NUM_0;
     while(true){
         uart_read_bytes(uart_num, data_buffer, BUF_SIZE, 20 / portTICK_RATE_MS);
         int command = *data_buffer;
-        // switch (command)
-        // {
-        //     case 25:
-        //         motor_F.duty_cycle = 0;
-        //         motor_B.duty_cycle = 0;
-        //         motor_L.duty_cycle = 65;
-        //         motor_R.duty_cycle = 65;
-        //         break;
-        //     case 75:
-        //         motor_F.duty_cycle = 0;
-        //         motor_B.duty_cycle = 0;
-        //         motor_L.duty_cycle = -65;
-        //         motor_R.duty_cycle = -65;
-        //         break;
-        //     case 125:
-        //         motor_F.duty_cycle = 65;
-        //         motor_B.duty_cycle = 65;
-        //         motor_L.duty_cycle = 0;
-        //         motor_R.duty_cycle = 0;
-        //         break;
-        //     case 175:
-        //         motor_F.duty_cycle = -65;
-        //         motor_B.duty_cycle = -65;
-        //         motor_L.duty_cycle = 0;
-        //         motor_R.duty_cycle = 0;
-        //         break;
-        //     default:
-        //         motor_F.duty_cycle = 0;
-        //         motor_B.duty_cycle = 0;
-        //         motor_L.duty_cycle = 0;
-        //         motor_R.duty_cycle = 0;
-        //         break;
-        // }
         int pwm = 0;
         if((command >= 1) && (command <= 99)){
             pwm = 2*(command - 50);
@@ -222,7 +189,7 @@ void read_bot_motion_command_on_uart(uint8_t* data_buffer){
             motor_R.duty_cycle = 0;
         }
         else if((command >= 200) && (command <= 250)){
-            pwm = 1.5*(command - 225);
+            pwm = 1.75*(command - 225);
             motor_F.duty_cycle = pwm;
             motor_B.duty_cycle = pwm;
             motor_L.duty_cycle = pwm;
@@ -264,7 +231,7 @@ void write_duty_cycle_loop(motor_commander_t* motor){
 }
 
 void app_main(){
-    init_uart(uart_config, UART_NUM_1);
+    init_uart(uart_config, UART_NUM_0);
     init_motor(&motor_F);
     init_motor(&motor_L);
     init_motor(&motor_B);
