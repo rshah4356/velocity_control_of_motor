@@ -42,24 +42,24 @@ static void echo_task()
         .stop_bits = UART_STOP_BITS_1,
         .flow_ctrl = UART_HW_FLOWCTRL_DISABLE
     };
-    uart_param_config(UART_NUM_1, &uart_config);
-    uart_set_pin(UART_NUM_1, ECHO_TEST_TXD, ECHO_TEST_RXD, ECHO_TEST_RTS, ECHO_TEST_CTS);
-    uart_driver_install(UART_NUM_1, BUF_SIZE * 2, 0, 0, NULL, 0);
+    uart_param_config(UART_NUM_0, &uart_config);
+    uart_set_pin(UART_NUM_0, ECHO_TEST_TXD, ECHO_TEST_RXD, ECHO_TEST_RTS, ECHO_TEST_CTS);
+    uart_driver_install(UART_NUM_0, BUF_SIZE * 2, 0, 0, NULL, 0);
 
     // Configure a temporary buffer for the incoming data
     uint8_t *data = (uint8_t *) malloc(BUF_SIZE);
     size_t* buff_len = (size_t* )malloc(sizeof(size_t));
     while (1) {
         // Read data from the UART
-        int len = uart_read_bytes(UART_NUM_1, data, BUF_SIZE, 20 / portTICK_RATE_MS);
+        int len = uart_read_bytes(UART_NUM_0, data, BUF_SIZE, 20 / portTICK_RATE_MS);
         // Write data back to the UART
         vTaskDelay(10 / portTICK_RATE_MS);
         // if((unsigned long)*buff_len){
         if(len){
             printf("data: %d\n", *data);
             // printf("data: %d %s %x \t( %d ) \t( %lu )\n", *data -'0', (char*)data, *data, len, (unsigned long)*buff_len);
-            vTaskDelay(10 / portTICK_RATE_MS);
-            uart_write_bytes(UART_NUM_1, (const char *) data, len);
+            // vTaskDelay(10 / portTICK_RATE_MS);
+            // uart_write_bytes(UART_NUM_0, (const char *) data, len);
         }
         vTaskDelay(10 / portTICK_RATE_MS);
     }
