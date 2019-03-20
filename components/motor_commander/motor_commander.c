@@ -80,8 +80,9 @@ void drive_motor(motor_commander_t* motor){
 
 void print_motor_status(motor_commander_t* motor){
     while(true){
-        printf("%s:,\tDES: %d,\tCURR: %d,\t", motor->name, motor->desr_rpm, motor->encoder.curr_rpm);
-        printf("dc: %f,\tdel_dc: %f\tKP: %f\tKD: %f\tmode: %d\terr: %d\t\n", motor->duty_cycle, motor->del_duty_cycle, motor->Kp, motor->Kd, motor->tune_mode, motor->err);
+        // printf("%s:,\tDES: %d,\tCURR: %d,\t", motor->name, motor->desr_rpm, motor->encoder.curr_rpm);
+        // printf("dc: %f,\tdel_dc: %f\tKP: %f\tKD: %f\tmode: %d\terr: %d\t\n", motor->duty_cycle, motor->del_duty_cycle, motor->Kp, motor->Kd, motor->tune_mode, motor->err);
+        printf("%s:,\tticks:%ld\n",motor->name,motor->encoder.ticks_count);
         vTaskDelay(25 / portTICK_RATE_MS);
     }
 }

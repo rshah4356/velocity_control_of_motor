@@ -21,8 +21,8 @@
     #define ENCODER_L_A     36
     #define ENCODER_L_B     39
     
-    #define ECHO_TEST_TXD  (1)
-    #define ECHO_TEST_RXD  (3)
+    #define UART_TXD  (17)
+    #define UART_RXD  (16)
     #define ECHO_TEST_RTS  (UART_PIN_NO_CHANGE)
     #define ECHO_TEST_CTS  (UART_PIN_NO_CHANGE)
 

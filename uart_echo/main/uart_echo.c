@@ -59,7 +59,7 @@ static void echo_task()
             printf("data: %d\n", *data);
             // printf("data: %d %s %x \t( %d ) \t( %lu )\n", *data -'0', (char*)data, *data, len, (unsigned long)*buff_len);
             // vTaskDelay(10 / portTICK_RATE_MS);
-            // uart_write_bytes(UART_NUM_0, (const char *) data, len);
+            uart_write_bytes(UART_NUM_0, (const char *) data, len);
         }
         vTaskDelay(10 / portTICK_RATE_MS);
     }

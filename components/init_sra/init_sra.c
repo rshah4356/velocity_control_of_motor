@@ -4,7 +4,7 @@
 
 void init_uart(uart_config_t uart_config, uart_port_t uart_num){
     uart_param_config(uart_num, &uart_config);
-    esp_err_t uart_error = uart_set_pin(uart_num, ECHO_TEST_TXD, ECHO_TEST_RXD, ECHO_TEST_RTS, ECHO_TEST_CTS);
+    esp_err_t uart_error = uart_set_pin(uart_num, UART_TXD, UART_RXD, ECHO_TEST_RTS, ECHO_TEST_CTS);
     uart_driver_install(uart_num, BUF_SIZE * 2, 0, 0, NULL, 0);
     printf("init_uart(uart_num = %d) error = %d\t ENDS\n", uart_num, uart_error);
 }
