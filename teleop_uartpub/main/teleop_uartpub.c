@@ -11,7 +11,7 @@
 
 #define MOTOR_KP_STEP 0.005
 #define MOTOR_KD_STEP 1.0
-
+#define MAXSPEED 2
 
 // encoder_commander_t encoder_0 = (encoder_commander_t) {.name = "ENCODER_0", .id = 0, .curr_rpm = 0, .ticks_count = 0, .enc_intr = ENCODER_0_A, .enc_dir = ENCODER_0_B};
 // mcpwm_t pwm_A = (mcpwm_t) {.pwm_unit = MCPWM_UNIT_0, .pwm_timer = MCPWM_TIMER_0, .pwm_operator = MCPWM0A, .pwm_pin = MOTOR_0_PWM_A};
@@ -90,7 +90,7 @@ void read_bot_motion_command_on_uart(uint8_t* data_buffer){
             }
             else if(command & 128){
                 // command_r = command & 127; 
-                pwm = 10*(command - 169);
+                pwm = MAXSPEED*(command - 169);
                 motor_F.duty_cycle = 0;
                 motor_B.duty_cycle = 0;
                 // motor_L.des = pwm;
@@ -99,7 +99,7 @@ void read_bot_motion_command_on_uart(uint8_t* data_buffer){
             }
             else{
                 // command_l = command ;
-                pwm = 10* (command - 41);
+                pwm = MAXSPEED* (command - 41);
                 motor_F.duty_cycle = 0;
                 motor_B.duty_cycle = 0;
                 motor_L.duty_cycle = pwm;
