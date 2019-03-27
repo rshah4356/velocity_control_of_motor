@@ -36,7 +36,7 @@ void init_gpio(gpio_num_t NUM_GPIO, gpio_mode_t GPIO_MODE){
 void init_mcpwm(mcpwm_t* pwm){
     mcpwm_gpio_init(pwm->pwm_unit, pwm->pwm_io_signals, pwm->pwm_pin);
     mcpwm_config_t pwm_config;
-    pwm_config.frequency = 500;
+    pwm_config.frequency = 400;
     pwm_config.cmpr_a = 0;
     pwm_config.cmpr_b = 0;
     pwm_config.counter_mode = MCPWM_UP_COUNTER;

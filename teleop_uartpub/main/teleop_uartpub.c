@@ -108,7 +108,7 @@ void read_bot_motion_command_on_uart(uint8_t* data_buffer){
             }
             printf("uart_data_received: %d, command_l: %d, command_r: %d\n", command, command_l, command_r);
             // printf("KP:%lf\tKD:%lf\t", motor_R.Kp, motor_R.Kd);
-            printf("motor duty_cycle: %f\t%f\t%f\t%f\n", motor_F.duty_cycle, motor_B.duty_cycle, motor_L.duty_cycle, motor_R.duty_cycle);
+            // printf("motor duty_cycle: %f\t%f\t%f\t%f\n", motor_F.duty_cycle, motor_B.duty_cycle, motor_L.duty_cycle, motor_R.duty_cycle);
             vTaskDelay(10 / portTICK_RATE_MS);
             buffer_offset++;
         }
