@@ -9,9 +9,9 @@
 #include "pin_defs.h"
 #include "motor_commander.h"
 //For Lower RPM i.e < 100 RPM// 
-#define MOTOR_KP 0.0119
-#define MOTOR_KD 20.0
-#define MOTOR_KP_STEP 0.005
+#define MOTOR_KP 0.0120
+#define MOTOR_KD 30.0//20.0
+#define MOTOR_KP_STEP 0.0005 //0,005
 #define MOTOR_KD_STEP 1.0
 #define MAXSPEED 10
 
