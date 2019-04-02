@@ -11,9 +11,10 @@
 
 #define MOTOR_KP_STEP 0.005
 #define MOTOR_KD_STEP 1.0
-#define MAXPWM 65
-#define MINPWN 35
-#define ENCODING_FACTOR (MAXPWM - MINPWN)/40
+#define MAXPWM 65.0
+#define MINPWM 35.0
+#define ENCODING_FACTOR (MAXPWM)/40.0
+// #define MULTIPLYING_FACTOR  
 // encoder_commander_t encoder_0 = (encoder_commander_t) {.name = "ENCODER_0", .id = 0, .curr_rpm = 0, .ticks_count = 0, .enc_intr = ENCODER_0_A, .enc_dir = ENCODER_0_B};
 // mcpwm_t pwm_A = (mcpwm_t) {.pwm_unit = MCPWM_UNIT_0, .pwm_timer = MCPWM_TIMER_0, .pwm_operator = MCPWM0A, .pwm_pin = MOTOR_0_PWM_A};
 // mcpwm_t pwm_B = (mcpwm_t) {.pwm_unit = MCPWM_UNIT_0, .pwm_timer = MCPWM_TIMER_0, .pwm_operator = MCPWM0B, .pwm_pin = MOTOR_0_PWM_B};
@@ -53,9 +54,10 @@ uart_config_t uart_config = {
     .flow_ctrl = UART_HW_FLOWCTRL_DISABLE
 };
 void read_bot_motion_command_on_uart(uint8_t* data_buffer){
-    int command_l = 0;
-    int command_r = 0;
-    int pwm = 0;
+    // int command_l = 0;
+    // int command_r = 0;
+    float pwm_l = 0;
+    float pwm_r = 0;
     while(true){
         int len = uart_read_bytes(esp_to_ros, data_buffer, BUF_SIZE, 20 / portTICK_RATE_MS);
         int buffer_offset = 0;
@@ -91,23 +93,32 @@ void read_bot_motion_command_on_uart(uint8_t* data_buffer){
             }
             else if(command & 128){
                 // command_r = command & 127; 
-                pwm = ENCODING_FACTOR * (command - 169);
+                pwm_r = ENCODING_FACTOR * (command - 169);
                 motor_F.duty_cycle = 0;
                 motor_B.duty_cycle = 0;
                 // motor_L.des = pwm;
-                motor_R.duty_cycle = pwm;
-                
+                // if (pwm_r == 0)
+                    // motor_R.duty_cycle = 0;
+                // else if (pwm_r > 0)
+                motor_R.duty_cycle =  pwm_r;
+                // else 
+                    // motor_R.duty_cycle = -MINPWM + pwm_r;
+
             }
             else{
                 // command_l = command ;
-                pwm = ENCODING_FACTOR * (command - 41);
+                pwm_l = ENCODING_FACTOR * (command - 41);
                 motor_F.duty_cycle = 0;
                 motor_B.duty_cycle = 0;
-                motor_L.duty_cycle = pwm;
-                // motor_R.duty_cycle = pwm;
-                
+                // if (pwm_l == 0)
+                    // motor_L.duty_cycle = 0;
+                // else if (pwm_l > 0)
+                    motor_L.duty_cycle =  pwm_l;
+                // else 
+                    // motor_L.duty_cycle = -MINPWM + pwm_l;
+
             }
-            printf("uart_data_received: %d, command_l: %d, command_r: %d\n", command, command_l, command_r);
+            printf("uart_data_received: %d, command_l: %f, command_r: %f\n", command, pwm_l, pwm_r);
             // printf("KP:%lf\tKD:%lf\t", motor_R.Kp, motor_R.Kd);
             // printf("motor duty_cycle: %f\t%f\t%f\t%f\n", motor_F.duty_cycle, motor_B.duty_cycle, motor_L.duty_cycle, motor_R.duty_cycle);
             vTaskDelay(10 / portTICK_RATE_MS);
@@ -139,8 +150,8 @@ void app_main(){
     xTaskCreate(write_duty_cycle_loop, "drive_motor L", 8192, &motor_L, 23, NULL);
     xTaskCreate(write_duty_cycle_loop, "drive_motor R", 8192, &motor_R, 23, NULL);
     xTaskCreate(write_duty_cycle_loop, "drive_motor B", 8192, &motor_B, 23, NULL);
-    xTaskCreate(print_motor_status, "print_motor R", 8192, &motor_R, 20, NULL);
-    xTaskCreate(print_motor_status, "print_motor L", 8192, &motor_L, 20, NULL); 
+    // xTaskCreate(print_motor_status, "print_motor R", 8192, &motor_R, 20, NULL);
+    // xTaskCreate(print_motor_status, "print_motor L", 8192, &motor_L, 20, NULL); 
     uint8_t ticks_L, ticks_R;
     while(true){
         ticks_L = (uint8_t)motor_L.encoder.total_ticks;
